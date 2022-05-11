@@ -1,0 +1,20 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Nouvel Role
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+
+        <h2>Création d'un Role</h2>
+        {{ form_start(form) }}
+        {{ form_label(form.libelleRole,"Nom du Role") }} {{ form_widget(form.libelleRole, {'attr':{'value':'ROLE_'}}) }}
+        {{ form_widget(form) }}
+
+        <input type="submit"/>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

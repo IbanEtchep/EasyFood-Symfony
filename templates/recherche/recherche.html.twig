@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Rechercher un plat
+{% endblock %}
+
+{% block body %}
+
+    <div class="mx-auto col-8 mt-3">
+        <h2>Rechercher un plat</h2>
+        {% form_theme form 'bootstrap_5_layout.html.twig' %}
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-3">{{ form_label(form.plat) }}{{ form_widget(form.plat) }}</div>
+            <div class="col-md-3">{{ form_label(form.ville) }} {{ form_widget(form.ville) }}</div>
+            <div class="col-md-2">{{ form_label(form.typePlat) }}{{ form_widget(form.typePlat,{'attr':{'class':''}}) }}</div>
+            <div class="col-md-2">{{ form_label(form.min) }} {{ form_widget(form.min,{'attr':{'class':''}}) }}</div>
+            <div class="col-md-2">{{ form_label(form.max) }} {{ form_widget(form.max,{'attr':{'class':''}}) }}</div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-success mt-3 mb-3 mx-auto d-flex justify-content-center align-content-center">
+            RECHERCHER
+        </button>
+
+        {{ form_end(form) }}
+
+        {% if lesPlats is not empty %}
+            <br>
+            <h3>Résultats :</h3>
+            <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2 g-4">
+                {% for plat in lesPlats %}
+                    <div class="col">
+                        <div class="card plat-card">
+                            <img style="height: 200px" src="{{ asset('uploads/plats_images/' ~ plat.imageFilename) }}" class="card-img-top" alt="image-plat">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ plat }} <span class="badge bg-dark">{{ plat.prixClientP }} €</span></h5>
+                                <p>
+                                    Restaurant : {{ plat.leResto }} à {{ plat.leResto.villeR }}<br>
+                                    {{ plat.descriptionP }} <br>
+                                    {% if "now"|date('H:i') > plat.leResto.heureFermeture|date('H:i') %}
+                                    <p class="text-danger">Fermé, ouvre à {{ plat.leResto.heureOuverture|date('H:i') }}</p>
+                                {% else %}
+                                    <p class="text-success">Ouvert, ferme à {{ plat.leResto.heureFermeture|date('H:i') }}</p>
+                                    {% if app.user %}
+                                        <button class="btn btn-primary">
+                                            <a id="commander" href="{{ path("liste_plats_resto", {id:plat.leResto.id}) }}">Commander</a>
+                                        </button>
+                                    {% endif %}
+                                {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <h3>Résultats :</h3>
+            <p>Aucun résultat ne correspond à votre recherche.</p>
+        {% endif %}
+        <br>
+    </div>
+{% endblock %}

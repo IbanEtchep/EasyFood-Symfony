@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Nouvelle évaluation
+{% endblock %}
+
+{% block body %}
+        <div class="container p-3 my-3 border">
+
+        <h1>Nouvelle évaluation du resto {{ uneEval.unResto.nomR }}</h1>
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(form) }}
+        {{ form_label(form.noteQualiteNourriture,'Note de la qualité de la nourriture') }} {{ form_widget(form.noteQualiteNourriture) }}
+        {{ form_label(form.noteRespectRecette,'Note du respect de la recette') }} {{ form_widget(form.noteRespectRecette) }}
+        {{ form_label(form.noteEsthetique,'Note esthétique') }} {{ form_widget(form.noteEsthetique) }}
+        {{ form_label(form.noteCout,'Note du coût') }} {{ form_widget(form.noteCout) }}
+        {{ form_label(form.commentaireEvaluation,'Commentaire évaluation') }} {{ form_widget(form.commentaireEvaluation) }}
+        <br>
+        <input type="submit" class="btn btn-primary"/>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

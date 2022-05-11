@@ -1,0 +1,20 @@
+[18-Nov-2021 13:53:22 UTC] PHP Fatal error:  Uncaught Error: Class 'Symfony\Bundle\FrameworkBundle\Controller\AbstractController' not found in /home/u167005049/domains/btssio.space/public_html/EasyFood/src/Controller/TypePlatController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/u167005049/domains/btssio.space/public_html/EasyFood/src/Controller/TypePlatController.php on line 16
+[18-Nov-2021 13:53:26 UTC] PHP Fatal error:  Uncaught Error: Class 'Symfony\Bundle\FrameworkBundle\Controller\AbstractController' not found in /home/u167005049/domains/btssio.space/public_html/EasyFood/src/Controller/SearchController.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/u167005049/domains/btssio.space/public_html/EasyFood/src/Controller/SearchController.php on line 13
+[19-Nov-2021 14:01:44 UTC] PHP Fatal error:  Uncaught Error: Class 'Symfony\Bundle\FrameworkBundle\Controller\AbstractController' not found in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/RestoController.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/RestoController.php on line 18
+[19-Nov-2021 14:01:56 UTC] PHP Fatal error:  Uncaught Error: Class 'Symfony\Bundle\FrameworkBundle\Controller\AbstractController' not found in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/RestoController.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/RestoController.php on line 18
+[19-Nov-2021 14:02:02 UTC] PHP Fatal error:  Uncaught Error: Class 'Symfony\Bundle\FrameworkBundle\Controller\AbstractController' not found in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/PanierController.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/u167005049/domains/btssio.online/public_html/EasyFood/EasyFood/src/Controller/PanierController.php on line 16

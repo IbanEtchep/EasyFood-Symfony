@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Gestion Evaluation
+{% endblock %}
+
+{% block body %}
+  {% for element in lesClients %}
+    <div style="margin-top:20px;" class="card border-dark col-10 me-auto ms-auto">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table app-table-hover mb-0 text-left">
+            <thead>
+              <tr>
+                <th class="cell">Utilisateur</th>
+              </tr>
+            </thead>
+          <tbody>
+            <tr class="align-middle">
+              <td class="cell">{{element.id}} {{element.nomU}}</td>
+              <td class="cell">
+              {% for element2 in lesEvals %}
+                {% if element2.leUtilisateur == element and not element2.evaluationModere %}
+              <tr>
+              <td class="cell align-middle">
+                  <div style="margin-top:20px;" class="card border-dark col-10 me-auto ms-auto">
+                    <div class="card-body">
+                      {{element2.commentaireEvaluation}}
+                    </div>
+                  </div>
+                  </td>
+                  <td class="cell align-middle">
+                    <div class="btn-group" role="group">
+                      <a href="{{path('accept_eval',{idu:element.id, idr:element2.unResto.id})}}" type="button" class="btn btn-success">Accepter</a>
+                      <a href="{{path('deny_eval',{idu:element.id, idr:element2.unResto.id})}}" type="button" class="btn btn-danger">Refuser</a>
+                    </div>
+                  </td>
+              </tr>
+                {% endif %}
+              {% endfor %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

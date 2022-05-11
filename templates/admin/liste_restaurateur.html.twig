@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Gestion Restaurateur
+{% endblock %}
+
+{% block body %}
+  <div style="margin-top:20px;" class="card border-dark col-10 me-auto ms-auto">
+    <div class="card-body">
+      <div class="table-responsive">
+      <table class="table app-table-hover mb-0 text-left">
+        <thead>
+          <tr>
+            <th class="cell">ID</th>
+            <th class="cell">Nom</th>
+            <th class="cell">Prénom</th>
+            <th class="cell">Mail</th>
+            <th class="cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for element in lesRestaurateurs %}
+            <tr class="align-middle">
+              <td class="cell">{{element.id}}</td>
+              <td class="cell">{{element.nomU}}</td>
+              <td class="cell">{{element.prenomU}}</td>
+              <td class="cell">{{element.mailU}}</td>
+              <td class="cell">
+              <a href="{{path('new_restaurant',{id:element.id})}}" type="button" class="btn btn-success">Ajouter un Restaurant</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

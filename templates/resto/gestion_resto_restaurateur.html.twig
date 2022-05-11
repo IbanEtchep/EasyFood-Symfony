@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gestion {{ leResto.nomR }}
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+        <h1>Liste des plats de {{ leResto.nomR }}</h1>
+        <ul class="list-group">
+            {% for plat in leResto.lesPlats %}
+
+                <li class="list-group-item">
+                    <a href="{{ path("upd_plat", {id:plat.id}) }}">{{ plat.nomP }}</a>
+                </li>
+
+            {% endfor %}
+        </ul>
+        <br>
+        
+        <a href="{{ path("new_plat", {idResto:leResto.id}) }}"><button class="btn btn-primary">Ajouter un plat</button></a>
+    </div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Gestion Commentaire
+{% endblock %}
+
+{% block body %}
+  <div style="margin-top:20px;" class="card border-dark col-10 me-auto ms-auto">
+    <div class="card-body">
+      <div class="table-responsive">
+      <table class="table app-table-hover mb-0 text-left">
+        <thead>
+          <tr>
+            <th class="cell">ID</th>
+            <th class="cell">Commentaire</th>
+            <th style="text-align:right;" class="cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for element in lesClients %}
+            {% if element.commentaireModere == false and element.commentaireEasyFood %}
+              <tr class="align-middle">
+                <td class="cell">{{element.id}}</td>
+                <td class="cell">{{element.commentaireEasyFood}}</td>
+                <td style="text-align:right;" class="cell">
+                <div class="btn-group" role="group">
+                  <a href="{{path('accept_com',{id:element.id})}}" type="button" class="btn btn-success">Accepter</a>
+                  <a href="{{path('deny_com',{id:element.id})}}" type="button" class="btn btn-danger">Refuser</a>
+                </div>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

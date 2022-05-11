@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Detail d'une commande
+{% endblock %}
+
+{% block body %}
+
+    <div class="container p-3 my-3 border">
+
+        <h1>Commande {{ uneCommande.id }}</h1>
+        Date de commande : {{ uneCommande.dateC|date("d/m/Y") }}<br>
+        Date de livraison : {{ uneCommande.dateLivrC|date("d/m/Y H:i") }}<br>
+        Mode de règlement : {{ uneCommande.modeReglementC }}<br>
+        Commentaire : {{ uneCommande.commentaireClientC }}<br>
+        Prix total de la commande : {{ prixTotal }} €<br>
+        Adresse de livraison : {{ app.user.numAdrC }} {{ app.user.rueC }} {{ app.user.cpC }} {{ app.user.villeC }}<br>
+    </div>
+    <div class="container p-3 my-3 border">
+        <h2>Plats</h2>
+        {% if lesContenirs  is not empty %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom du plat</th>
+                        <th scope="col">Prix du plat unitaire</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unContenir in lesContenirs %}
+                        <tr>
+                            <th scope="row">{{ unContenir.unPlat.nomP }}</th>
+                            <td>{{ unContenir.unPlat.prixClientP }} €</td>
+                            <td>{{ unContenir.quantite }}</td>
+                            <td>{{ unContenir.unPlat.prixClientP*unContenir.quantite  }} €</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="container p-3 my-3 border">
+                <h4>Restaurant <a href="{{path('detail_resto',{id:uneCommande.getRestoCommande.id})}}">{{ uneCommande.getRestoCommande.nomR }}</a></h4>
+                {% if not app.user.hasEvaluation(uneCommande.getRestoCommande.id) %}
+                    <a href="{{path('new_eval_resto',{idR:uneCommande.getRestoCommande.id})}}" type="button" class="btn btn-warning">Evaluer ce resto</a>
+                {% else %}
+                    <a href="{{path('upd_eval_resto',{idR:uneCommande.getRestoCommande.id})}}" type="button" class="btn btn-warning">Modifier votre évaluation</a>
+                {% endif %}
+            </div
+        {% else %}
+            Aucun plat
+        {% endif %}
+    </div>
+{% endblock %}

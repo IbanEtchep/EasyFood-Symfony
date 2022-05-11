@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Gestion Utilisateur
+{% endblock %}
+
+{% block body %}
+  <div style="margin-top:20px;" class="card border-dark col-10 me-auto ms-auto">
+    <div class="card-body">
+      <div class="table-responsive">
+      <table class="table app-table-hover mb-0 text-left">
+        <thead>
+          <tr>
+            <th class="cell">ID</th>
+            <th class="cell">Nom</th>
+            <th class="cell">Prénom</th>
+            <th class="cell">Mail</th>
+            <th class="cell">Role</th>
+            <th class="cell">Commentaire Visible</th>
+            <th class="cell">Commentaire Modéré</th>
+            <th class="cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for element in lesUsers %}
+            <tr class="align-middle">
+              <td class="cell">{{element.id}}</td>
+              <td class="cell">{{element.nomU}}</td>
+              <td class="cell">{{element.prenomU}}</td>
+              <td class="cell">{{element.mailU}}</td>
+              <td class="cell">
+              <select style="width:auto;" class="form-select" onChange="location = this.options[this.selectedIndex].value;" name="{{element.id}}">
+                {% for element2 in lesRoles %}
+              <option value="{{path('upd_role_user',{id:element.id, idrole:element2.id}) }}"{% if element2.id == element.leRole.id %} selected {% endif %}>{{element2.libelleRole}}</option>
+                {% endfor %}
+                <option class="btn btn-success" value="{{ path('new_role_id',{id:element.id}) }}">--Nouveau Role--</option>
+              </select>
+              </td>
+            <td style="text-align:center;" class="cell">
+            {% if element.commentaireVisible %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-check-square" viewBox="0 0 16 16">
+              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+            </svg>
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            {% endif %}
+            </td>
+            <td style="text-align:center;" class="cell">
+            {% if element.commentaireModere %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="green" class="bi bi-check-square" viewBox="0 0 16 16">
+              <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+            </svg>
+            {% else %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="red" class="bi bi-x-square" viewBox="0 0 16 16">
+                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            {% endif %}
+            </td>
+              <td>
+              <div class="btn-group" role="group">
+                <a href="{{path('upd_user',{id:element.id})}}" type="button" class="btn btn-warning">Modifier</a>
+                <a href="{{path('del_user',{id:element.id})}}" type="button" class="btn btn-danger">Supprimer</a>
+              </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

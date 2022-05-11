@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Accueil
+{% endblock %}
+
+{% block body %}
+<div style="background-image:url('{{ asset('assets/img/slider1.jpg') }}')" class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+  <div class="col-md-5 p-lg-5 mx-auto my-5">
+  <h1 class="display-4 font-weight-bold" style="color:#3FC060; background-color:rgba(var(--bs-dark-rgb),var(--bs-bg-opacity))!important;">Venez passer commande chez nous !</h1>
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <a class="btn btn-outline-dark btn-lg" style="background-color:#3FC060;" href="{{ path('search') }}">C'est parti !</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

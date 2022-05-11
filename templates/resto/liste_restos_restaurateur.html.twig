@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Vos restaurants
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+        <h1>Vos restaurants</h1>
+        <ul class="list-group">
+            {% for unResto in lesRestos%}
+
+                <li class="list-group-item">
+                    <a href="{{ path("gestion_resto_restaurateur", {idResto:unResto.id}) }}">{{ unResto.nomR }}</a>
+                </li>
+
+            {% endfor %}
+        </ul>
+        <br>
+    </div>
+{% endblock %}

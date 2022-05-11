@@ -1,0 +1,39 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Editer un plat
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+        
+        <h2>Editer un plat</h2>
+        {% form_theme form 'bootstrap_5_layout.html.twig' %}        
+        {{ form_start(form) }}
+        {{ form_label(form.nomP, "Nom du plat") }}{{ form_widget(form.nomP) }}
+        {{ form_label(form.prixFournisseurP, "Prix fournisseur") }}{{ form_widget(form.prixFournisseurP) }}
+        {{ form_label(form.prixClientP, "Prix client") }}{{ form_widget(form.prixClientP) }}
+        {{ form_label(form.descriptionP, "Description") }}{{ form_widget(form.descriptionP) }}
+        {{ form_label(form.leTypePlat, "Type du plat") }}{{ form_widget(form.leTypePlat) }}
+        {{ form_label(form.image, "Image") }}{{ form_widget(form.image) }}    
+        <input type="submit"/>
+        {{ form_end(form) }}
+        
+        Image : 
+        <img class="img-thumbnail" src="{{ asset('uploads/plats_images/' ~ unPlat.imageFilename) }}" alt="image du plat"/>
+    </div>
+        
+{#    <div class="container p-3 my-3 border">
+        {% if unPlat.photoP is defined %}
+            {{ unPlat.photoP }}
+        {% endif %}
+        <h2>Modifier l'image</h2>
+        {% form_theme form2 'bootstrap_5_layout.html.twig' %}        
+        {{ form_start(form2) }}
+        {{ form_widget(form2) }}
+        <input type="submit"/>
+        {{ form_end(form2) }}
+    </div>#}
+    
+{% endblock %}

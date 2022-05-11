@@ -1,0 +1,19 @@
+#logo{
+height: 50px;
+width: auto;
+}
+
+.plat-card{
+    width: 100%;
+    height: auto;
+}
+
+.plat-card img{
+    width: 100%;
+    height: auto;
+}
+
+#commander {
+    text-decoration: none;
+    color: #fff;
+}

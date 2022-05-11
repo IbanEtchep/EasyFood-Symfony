@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a12561d5-9ab5-4546-b622-3d96d3e69a39" name="flo" url="http://btssio.online/EasyFoodv2/public/index.php/">
+        <fileTransfer rootFolder="/home/u167005049" accessType="SFTP" host="81.16.28.154" port="65002" sshConfigId="b594c725-eb46-4f2d-adf5-787f4788e5b7" sshConfig="u167005049@81.16.28.154:65002 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

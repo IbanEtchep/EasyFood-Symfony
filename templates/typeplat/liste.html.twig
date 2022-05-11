@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des types de plat
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+
+        <h2>Les types de plat</h2>
+        <ul class="list-group">
+            {% for element in lesTypePlat %}
+
+                <li class="list-group-item">
+                    <a href="{{ path('upd_typeplat', {id: element.id})}}">{{ element.libelleType }}</a>
+                </li>
+
+            {% endfor %}
+        </ul>
+        <br>
+         <a href="{{ path('new_typeplat') }}"><button class="btn btn-primary">Ajouter</button></a>
+    </div>
+{% endblock %}

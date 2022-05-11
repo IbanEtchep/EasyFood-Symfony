@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Mise à jour adresse client
+{% endblock %}
+
+{% block body %}
+        <div class="container p-3 my-3 border">
+
+        <h1>Mise à jour adresse client</h1>
+        {% form_theme form 'bootstrap_4_layout.html.twig' %}
+        {{ form_start(form) }}
+        {{ form_label(form.numAdrC,'Numéro adresse') }} {{ form_widget(form.numAdrC) }}
+        {{ form_label(form.rueC,'Rue') }} {{ form_widget(form.rueC) }}
+        {{ form_label(form.cpC,'Code postal') }} {{ form_widget(form.cpC) }}
+        {{ form_label(form.villeC,'Ville') }} {{ form_widget(form.villeC) }}
+        <br>
+        <input type="submit" class="btn btn-primary"/>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

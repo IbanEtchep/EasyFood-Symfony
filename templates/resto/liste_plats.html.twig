@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des plats du resto {{ leResto.nomR }}
+{% endblock %}
+
+{% block body %}
+    <!-- Si le resto est fermé -->
+    {% if "now"|date('H:i') > leResto.heureFermeture|date('H:i') %}
+        <p class="text-danger" style="margin-left: 20px; margin-top:20px;">Le restaurant est fermé, ouvre à {{ leResto.heureOuverture|date('H:i') }}</p>
+        <div class="container p-3 my-3 border" id="panier">
+            <h1>Panier</h1>
+            {% if lesPlatsPanier is not empty %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Plat</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix unitaire du plat</th>
+                            <th scope="col">Prix total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for unPlat2 in lesPlatsPanier %}
+                            {% set total = total + unPlat2.lePlat.prixClientP*unPlat2.quantite %}
+                            <tr>
+                                <th scope="row">{{ unPlat2.lePlat.nomP }}</th>
+                                <td>{{ unPlat2.quantite }}</td>
+                                <td>{{ unPlat2.lePlat.prixClientP }} €</td>
+                                <td>{{ unPlat2.lePlat.prixClientP*unPlat2.quantite }} €</td>
+                                <td><a href="{{ path('supp_panier_plat', {id: unPlat2.lePlat.id}) }}"><button class="btn btn-primary">Supprimer</button></a></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <th scope="row">Total panier : {{total}} €</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                Panier vide
+            {% endif %}
+            <br>
+
+        </div>
+        <!-- Si le resto est ouvert -->
+    {% else %}
+        <div class="container p-3 my-3 border">
+            <h1>Les plats du resto
+                <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    {{ leResto.nomR }}
+                </button>
+            </h1>
+            <!-- Fenetre Modal (detail resto) -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="max-width:1000px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Restaurant {{ leResto.nomR }}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Adresse : {{ leResto.numAdrR }} {{ leResto.rueAdrR }} {{ leResto.cpR }} {{ leResto.villeR }}<br/>
+                            Horaires : Ouvert de {{ leResto.heureOuverture|date('H:i') }} à {{ leResto.heureFermeture|date('H:i') }}
+                            <div class="container p-3 my-3 border">
+                                <h2>Evaluations</h2>
+                                {% if leResto.lesEvaluers is not empty %}
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Client</th>
+                                                <th scope="col">Qualité de nourriture</th>
+                                                <th scope="col">Respect de la recette</th>
+                                                <th scope="col">Esthétique</th>
+                                                <th scope="col">Coût</th>
+                                                <th scope="col">Commentaire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for evaluation in leResto.lesEvaluers %}
+                                                <tr>
+                                                    <th scope="row">{{ evaluation.leUtilisateur.prenomU }} {{ evaluation.leUtilisateur.nomU|slice(0, 1) }}</th>
+                                                    <td>
+                                                        {% for i in 0..4 %}
+                                                            {% if i<evaluation.noteQualiteNourriture %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="m349.5 45.066c-4.6836 0.19922-8.7461 3.2891-10.188 7.75l-52.75 163.49-171.74-0.33984c-4.8594-0.007813-9.1719 3.1211-10.672 7.7422-1.5 4.6211 0.14844 9.6836 4.082 12.535l139.16 100.7-53.434 163.32 0.003906-0.003906c-1.5117 4.6211 0.12891 9.6836 4.0625 12.543 3.9297 2.8555 9.2539 2.8516 13.18-0.011719l138.77-101.27 138.82 101.27v-0.003906c3.9258 2.8633 9.25 2.8672 13.184 0.011719 3.9297-2.8594 5.5703-7.9258 4.0586-12.543l-53.434-163.32 139.16-100.7 0.003906 0.003907c3.9375-2.8516 5.5859-7.9141 4.0859-12.539-1.5039-4.6211-5.8125-7.75-10.676-7.7383l-171.74 0.33984-52.809-163.49c-1.5469-4.7891-6.0977-7.957-11.125-7.7461z" fill-rule="evenodd"/></g></svg>
+                                                            {% else %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                <g>
+                                                                <path d="m348.53 39.305c-1.8242 0.49609-3.2773 1.8789-3.8594 3.6758l-57.508 172.73h-184.1c-2.4141 0.007813-4.5508 1.5625-5.3047 3.8594-0.75 2.293 0.054687 4.8125 1.9961 6.2461l149.56 109.33-57.508 178.42c-0.75 2.3125 0.074218 4.8438 2.043 6.2656 1.9688 1.4258 4.6328 1.418 6.5898-0.019531l149.56-109.33 149.56 109.33c1.957 1.4375 4.6211 1.4453 6.5898 0.019531 1.9688-1.4219 2.793-3.9531 2.043-6.2656l-57.508-178.42 149.56-109.33c1.9414-1.4336 2.7461-3.9531 1.9961-6.2461-0.75391-2.2969-2.8906-3.8516-5.3047-3.8594h-184.1l-57.508-172.73c-0.92188-2.8438-3.9141-4.4609-6.7969-3.6758zm1.4688 23.336 53.465 160.41c0.81641 2.2344 2.9531 3.707 5.3281 3.6758h171.05l-139.09 101.61c-1.9492 1.4297-2.7656 3.9492-2.0195 6.25l53.465 165.93-138.9-101.61h0.003906c-1.9727-1.4414-4.6445-1.4414-6.6172 0l-138.9 101.61 53.465-165.93h0.003906c0.74609-2.3008-0.070312-4.8203-2.0195-6.25l-139.09-101.61h171.05c2.375 0.03125 4.5117-1.4414 5.3281-3.6758z" fill-rule="evenodd"/></g></svg>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        {% for i in 0..4 %}
+                                                            {% if i<evaluation.noteRespectRecette %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="m349.5 45.066c-4.6836 0.19922-8.7461 3.2891-10.188 7.75l-52.75 163.49-171.74-0.33984c-4.8594-0.007813-9.1719 3.1211-10.672 7.7422-1.5 4.6211 0.14844 9.6836 4.082 12.535l139.16 100.7-53.434 163.32 0.003906-0.003906c-1.5117 4.6211 0.12891 9.6836 4.0625 12.543 3.9297 2.8555 9.2539 2.8516 13.18-0.011719l138.77-101.27 138.82 101.27v-0.003906c3.9258 2.8633 9.25 2.8672 13.184 0.011719 3.9297-2.8594 5.5703-7.9258 4.0586-12.543l-53.434-163.32 139.16-100.7 0.003906 0.003907c3.9375-2.8516 5.5859-7.9141 4.0859-12.539-1.5039-4.6211-5.8125-7.75-10.676-7.7383l-171.74 0.33984-52.809-163.49c-1.5469-4.7891-6.0977-7.957-11.125-7.7461z" fill-rule="evenodd"/></g></svg>
+                                                            {% else %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                <g>
+                                                                <path d="m348.53 39.305c-1.8242 0.49609-3.2773 1.8789-3.8594 3.6758l-57.508 172.73h-184.1c-2.4141 0.007813-4.5508 1.5625-5.3047 3.8594-0.75 2.293 0.054687 4.8125 1.9961 6.2461l149.56 109.33-57.508 178.42c-0.75 2.3125 0.074218 4.8438 2.043 6.2656 1.9688 1.4258 4.6328 1.418 6.5898-0.019531l149.56-109.33 149.56 109.33c1.957 1.4375 4.6211 1.4453 6.5898 0.019531 1.9688-1.4219 2.793-3.9531 2.043-6.2656l-57.508-178.42 149.56-109.33c1.9414-1.4336 2.7461-3.9531 1.9961-6.2461-0.75391-2.2969-2.8906-3.8516-5.3047-3.8594h-184.1l-57.508-172.73c-0.92188-2.8438-3.9141-4.4609-6.7969-3.6758zm1.4688 23.336 53.465 160.41c0.81641 2.2344 2.9531 3.707 5.3281 3.6758h171.05l-139.09 101.61c-1.9492 1.4297-2.7656 3.9492-2.0195 6.25l53.465 165.93-138.9-101.61h0.003906c-1.9727-1.4414-4.6445-1.4414-6.6172 0l-138.9 101.61 53.465-165.93h0.003906c0.74609-2.3008-0.070312-4.8203-2.0195-6.25l-139.09-101.61h171.05c2.375 0.03125 4.5117-1.4414 5.3281-3.6758z" fill-rule="evenodd"/></g></svg>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        {% for i in 0..4 %}
+                                                            {% if i<evaluation.noteEsthetique %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="m349.5 45.066c-4.6836 0.19922-8.7461 3.2891-10.188 7.75l-52.75 163.49-171.74-0.33984c-4.8594-0.007813-9.1719 3.1211-10.672 7.7422-1.5 4.6211 0.14844 9.6836 4.082 12.535l139.16 100.7-53.434 163.32 0.003906-0.003906c-1.5117 4.6211 0.12891 9.6836 4.0625 12.543 3.9297 2.8555 9.2539 2.8516 13.18-0.011719l138.77-101.27 138.82 101.27v-0.003906c3.9258 2.8633 9.25 2.8672 13.184 0.011719 3.9297-2.8594 5.5703-7.9258 4.0586-12.543l-53.434-163.32 139.16-100.7 0.003906 0.003907c3.9375-2.8516 5.5859-7.9141 4.0859-12.539-1.5039-4.6211-5.8125-7.75-10.676-7.7383l-171.74 0.33984-52.809-163.49c-1.5469-4.7891-6.0977-7.957-11.125-7.7461z" fill-rule="evenodd"/></g></svg>
+                                                            {% else %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                <g>
+                                                                <path d="m348.53 39.305c-1.8242 0.49609-3.2773 1.8789-3.8594 3.6758l-57.508 172.73h-184.1c-2.4141 0.007813-4.5508 1.5625-5.3047 3.8594-0.75 2.293 0.054687 4.8125 1.9961 6.2461l149.56 109.33-57.508 178.42c-0.75 2.3125 0.074218 4.8438 2.043 6.2656 1.9688 1.4258 4.6328 1.418 6.5898-0.019531l149.56-109.33 149.56 109.33c1.957 1.4375 4.6211 1.4453 6.5898 0.019531 1.9688-1.4219 2.793-3.9531 2.043-6.2656l-57.508-178.42 149.56-109.33c1.9414-1.4336 2.7461-3.9531 1.9961-6.2461-0.75391-2.2969-2.8906-3.8516-5.3047-3.8594h-184.1l-57.508-172.73c-0.92188-2.8438-3.9141-4.4609-6.7969-3.6758zm1.4688 23.336 53.465 160.41c0.81641 2.2344 2.9531 3.707 5.3281 3.6758h171.05l-139.09 101.61c-1.9492 1.4297-2.7656 3.9492-2.0195 6.25l53.465 165.93-138.9-101.61h0.003906c-1.9727-1.4414-4.6445-1.4414-6.6172 0l-138.9 101.61 53.465-165.93h0.003906c0.74609-2.3008-0.070312-4.8203-2.0195-6.25l-139.09-101.61h171.05c2.375 0.03125 4.5117-1.4414 5.3281-3.6758z" fill-rule="evenodd"/></g></svg>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>
+                                                        {% for i in 0..4 %}
+                                                            {% if i<evaluation.noteCout %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><path d="m349.5 45.066c-4.6836 0.19922-8.7461 3.2891-10.188 7.75l-52.75 163.49-171.74-0.33984c-4.8594-0.007813-9.1719 3.1211-10.672 7.7422-1.5 4.6211 0.14844 9.6836 4.082 12.535l139.16 100.7-53.434 163.32 0.003906-0.003906c-1.5117 4.6211 0.12891 9.6836 4.0625 12.543 3.9297 2.8555 9.2539 2.8516 13.18-0.011719l138.77-101.27 138.82 101.27v-0.003906c3.9258 2.8633 9.25 2.8672 13.184 0.011719 3.9297-2.8594 5.5703-7.9258 4.0586-12.543l-53.434-163.32 139.16-100.7 0.003906 0.003907c3.9375-2.8516 5.5859-7.9141 4.0859-12.539-1.5039-4.6211-5.8125-7.75-10.676-7.7383l-171.74 0.33984-52.809-163.49c-1.5469-4.7891-6.0977-7.957-11.125-7.7461z" fill-rule="evenodd"/></g></svg>
+                                                            {% else %}
+                                                                <svg width="15pt" height="15pt" version="1.1" viewBox="0 0 700 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                                <g>
+                                                                <path d="m348.53 39.305c-1.8242 0.49609-3.2773 1.8789-3.8594 3.6758l-57.508 172.73h-184.1c-2.4141 0.007813-4.5508 1.5625-5.3047 3.8594-0.75 2.293 0.054687 4.8125 1.9961 6.2461l149.56 109.33-57.508 178.42c-0.75 2.3125 0.074218 4.8438 2.043 6.2656 1.9688 1.4258 4.6328 1.418 6.5898-0.019531l149.56-109.33 149.56 109.33c1.957 1.4375 4.6211 1.4453 6.5898 0.019531 1.9688-1.4219 2.793-3.9531 2.043-6.2656l-57.508-178.42 149.56-109.33c1.9414-1.4336 2.7461-3.9531 1.9961-6.2461-0.75391-2.2969-2.8906-3.8516-5.3047-3.8594h-184.1l-57.508-172.73c-0.92188-2.8438-3.9141-4.4609-6.7969-3.6758zm1.4688 23.336 53.465 160.41c0.81641 2.2344 2.9531 3.707 5.3281 3.6758h171.05l-139.09 101.61c-1.9492 1.4297-2.7656 3.9492-2.0195 6.25l53.465 165.93-138.9-101.61h0.003906c-1.9727-1.4414-4.6445-1.4414-6.6172 0l-138.9 101.61 53.465-165.93h0.003906c0.74609-2.3008-0.070312-4.8203-2.0195-6.25l-139.09-101.61h171.05c2.375 0.03125 4.5117-1.4414 5.3281-3.6758z" fill-rule="evenodd"/></g></svg>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td>{% if evaluation.evaluationVisible %} {{ evaluation.commentaireEvaluation }} {%else %} Commentaire non visible{% endif %}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                {% else %}
+                                    Aucune évaluation pour ce resto
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- plats du resto -->
+            {% if lesPlats is not empty %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Plat</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Prix unitaire</th>
+                            <th scope="col">Photo</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for unPlat in lesPlats %}
+                            {% if unPlat.platVisible %}
+                                <tr>
+                                    <th scope="row">{{ unPlat.nomP }}</th>
+                                    <td>{{ unPlat.descriptionP }}</td>
+                                    <td>{{ unPlat.prixClientP }} €</td>
+                                    <td>{% if unPlat.imageFileName != null %}<img style="height: 80px" src ="{{ asset('uploads/plats_images/' ~ unPlat.imageFilename) }}" class="navbar-brand">{% endif %}</td>
+                                    <td>
+                                        {% if not app.user.hasPanierAutreResto(leResto.id) %}
+                                            {% form_theme forms[unPlat.id] 'bootstrap_4_layout.html.twig' %}
+                                            {{ form_start(forms[unPlat.id]) }}
+                                            {{ form_label(forms[unPlat.id].quantite,"Quantité : ") }}{{ form_widget(forms[unPlat.id].quantite) }}
+                                            <div class="d-none">
+                                                {{ form_label(forms[unPlat.id].idPlat,"") }}{{ form_widget(forms[unPlat.id].idPlat, {'attr':{'value':unPlat.id}}) }}
+                                            </div>
+                                            <input type="submit" value="Ajouter" class="btn btn-primary"/>
+                                            {{ form_end(forms[unPlat.id]) }}
+
+                                            <!-- si l'utilisateur a des plats d'un autre resto, il ne peut pas ajouter de plat de différents resto -->
+                                        {% else %}
+                                            Vous ne pouvez pas ajouter des plats de différents restos.
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                Aucun plat
+            {% endif %}
+            <br>
+
+        </div>
+        <div class="container p-3 my-3 border" id="panier">
+            <h1>PANIER</h1>
+            {% if lesPlatsPanier is not empty %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Plat</th>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix unitaire du plat</th>
+                            <th scope="col">Prix total</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for unPlat2 in lesPlatsPanier %}
+                            {% set total = total + unPlat2.lePlat.prixClientP*unPlat2.quantite %}
+                            <tr>
+                                <th scope="row">{{ unPlat2.lePlat.nomP }}</th>
+                                <td>{{ unPlat2.quantite }}</td>
+                                <td>{{ unPlat2.lePlat.prixClientP }} €</td>
+                                <td>{{ unPlat2.lePlat.prixClientP*unPlat2.quantite }} €</td>
+                                <td><a href="{{ path('supp_panier_plat', {id: unPlat2.lePlat.id}) }}"><button class="btn btn-primary">Supprimer</button></a></td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <th scope="row">Total panier : {{total}} €</th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><a href="{{path('new_commande')}}" type="button" class="btn btn-warning">Passer commande</a></th>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                Panier vide
+            {% endif %}
+            <br>
+
+        </div>
+
+    {% endif %}
+{% endblock %}

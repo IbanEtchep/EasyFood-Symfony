@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Nouvelle commande
+{% endblock %}
+
+{% block body %}
+    <div class="container p-3 my-3 border">
+        <h2>Panier</h2>
+        {% if lesComposers is not empty %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Plat</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix unitaire du plat</th>
+                        <th scope="col">Prix total</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unPlat in lesComposers %}
+                        {% set total = total + unPlat.lePlat.prixClientP*unPlat.quantite %}
+                        <tr>
+                            <th scope="row">{{ unPlat.lePlat.nomP }}</th>
+                            <td>{{ unPlat.quantite }}</td>
+                            <td>{{ unPlat.lePlat.prixClientP }} €</td>
+                            <td>{{ unPlat.lePlat.prixClientP*unPlat.quantite }} €</td>
+                            <td><a href="{{ path('supp_panier_plat', {id: unPlat.lePlat.id}) }}"><button class="btn btn-primary">Supprimer</button></a></td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th scope="row">Total panier : {{total}} €</th>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="container p-3 my-3 border">
+                <h2>Nouvelle commande</h2>
+                {% form_theme form 'bootstrap_4_layout.html.twig' %}
+                {{ form_start(form) }}
+                {{ form_label(form.commentaireClient,"Commentaire") }} {{ form_widget(form.commentaireClient) }}<br/>
+                {{ form_label(form.dateLivr,"Date et heure de livraison") }} {{ form_widget(form.dateLivr) }}<br/>
+                {{ form_label(form.modeReglement,"Moyen de paiement") }} {{ form_widget(form.modeReglement) }}<br/>
+                {{ form_widget(form) }}
+
+                <input type="submit" class="btn btn-primary"/>
+                {{ form_end(form) }}
+            </div>
+        {% else %}
+            Panier vide
+        {% endif %}
+    </div>
+
+
+{% endblock %}
